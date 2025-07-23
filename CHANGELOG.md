@@ -41,28 +41,28 @@
 
 ### 🗄️ Schema do Banco de Dados
 
-- [ ] Criar schema Prisma para entidade Users
-- [ ] Criar schema Prisma para entidade Tasks
-- [ ] Criar schema Prisma para entidade AI_Suggestions
-- [ ] Criar schema Prisma para entidade Notifications
-- [ ] Criar schema Prisma para entidade User_Preferences
-- [ ] Definir relacionamentos entre entidades
-- [ ] Configurar índices para performance
+- [x] Criar schema Prisma para entidade Users
+- [x] Criar schema Prisma para entidade Tasks
+- [x] Criar schema Prisma para entidade AI_Suggestions
+- [x] Criar schema Prisma para entidade Notifications
+- [x] Criar schema Prisma para entidade User_Preferences
+- [x] Definir relacionamentos entre entidades
+- [x] Configurar índices para performance
 
 ### 🛠️ Migrações e Seeds
 
-- [ ] Executar primeira migração do Prisma
-- [ ] Criar seeds para dados de teste
-- [ ] Validar schema no banco SQLite
-- [ ] Documentar estrutura do banco
-- [ ] Criar script de backup/restore para desenvolvimento
+- [x] Executar primeira migração do Prisma
+- [x] Criar seeds para dados de teste
+- [x] Validar schema no banco SQLite
+- [x] Documentar estrutura do banco
+- [x] Criar script de backup/restore para desenvolvimento
 
 ### 🧪 Testes de Banco
 
-- [ ] Criar testes unitários para models
-- [ ] Testar relacionamentos entre entidades
-- [ ] Validar constraints e validações
-- [ ] Testar performance de queries básicas
+- [x] Criar testes unitários para models
+- [x] Testar relacionamentos entre entidades
+- [x] Validar constraints e validações
+- [x] Testar performance de queries básicas
 
 ---
 

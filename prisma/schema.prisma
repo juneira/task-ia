@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum Priority {
+  ALTA          @map("Alta")
+  MEDIA         @map("Média")
+  BAIXA         @map("Baixa")
+  NAO_DEFINIDA  @map("Não definida")
+}
+
+enum TaskStatus {
+  PENDENTE      @map("Pendente")
+  EM_PROGRESSO  @map("Em Progresso")
+  CONCLUIDA     @map("Concluída")
+  CANCELADA     @map("Cancelada")
+}
+
+enum NotificationType {
+  TASK_DUE_SOON     @map("task_due_soon")
+  TASK_OVERDUE      @map("task_overdue")
+  TASK_COMPLETED    @map("task_completed")
+  PRIORITY_SUGGESTED @map("priority_suggested")
+}
+
+// Users - Usuários do sistema
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  tasks          Task[]
+  aiSuggestions  AiSuggestion[]
+  notifications  Notification[]
+  preferences    UserPreferences?
+
+  @@map("users")
+}
+
+// Tasks - Tarefas do usuário
+model Task {
+  id          String     @id @default(cuid())
+  userId      String     @map("user_id")
+  title       String
+  description String?
+  priority    Priority   @default(NAO_DEFINIDA)
+  status      TaskStatus @default(PENDENTE)
+  dueDate     DateTime?  @map("due_date")
+  isDeleted   Boolean    @default(false) @map("is_deleted")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aiSuggestions AiSuggestion[]
+  notifications Notification[]
+
+  // Índices
+  @@index([userId, isDeleted])
+  @@index([userId, status, isDeleted])
+  @@index([userId, priority, isDeleted])
+  @@index([dueDate])
+  @@map("tasks")
+}
+
+// AI_Suggestions - Sugestões de IA para métricas
+model AiSuggestion {
+  id                String    @id @default(cuid())
+  taskId            String?   @map("task_id")
+  userId            String    @map("user_id")
+  taskTitle         String    @map("task_title")
+  taskDescription   String?   @map("task_description")
+  taskDueDate       DateTime? @map("task_due_date")
+  suggestedPriority Priority  @map("suggested_priority")
+  confidence        Float?    // 0.00-1.00
+  reasoning         String?
+  wasAccepted       Boolean?  @map("was_accepted") // true=aceita, false=rejeitada, null=pendente
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  // Relacionamentos
+  task Task? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("ai_suggestions")
+}
+
+// Notifications - Notificações do sistema
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String           @map("user_id")
+  taskId    String?          @map("task_id")
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false) @map("is_read")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  // Relacionamentos
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  // Índices
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+  @@map("notifications")
+}
+
+// User_Preferences - Preferências do usuário
+model UserPreferences {
+  id                    String  @id @default(cuid())
+  userId                String  @unique @map("user_id")
+  emailNotifications    Boolean @default(true) @map("email_notifications")
+  inAppNotifications    Boolean @default(true) @map("in_app_notifications")
+  notificationAdvance   Int     @default(2) @map("notification_advance") // dias de antecedência
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
