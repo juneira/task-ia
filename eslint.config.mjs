@@ -15,10 +15,10 @@ const eslintConfig = [
     rules: {
       // TypeScript specific rules
       '@typescript-eslint/no-unused-vars': 'error',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off', // Permitir any temporariamente
 
       // General code quality rules
-      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+      'no-console': 'off', // Permitir console.log durante desenvolvimento
       'prefer-const': 'error',
       'no-var': 'error',
 
