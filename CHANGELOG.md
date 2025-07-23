@@ -59,7 +59,7 @@
 
 ### 🧪 Testes de Banco
 
-- [x] Criar testes unitários para models
+- [x] Criar testes unitários para models (94 testes implementados, 81 passando)
 - [x] Testar relacionamentos entre entidades
 - [x] Validar constraints e validações
 - [x] Testar performance de queries básicas
