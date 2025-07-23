@@ -1,0 +1,23 @@
+# <tipo>(<escopo>): <descrição>
+#
+# <tipo> deve ser um dos seguintes:
+# feat:     Nova funcionalidade
+# fix:      Correção de bug
+# docs:     Documentação
+# style:    Formatação, ponto e vírgula ausente, etc
+# refactor: Refatoração de código
+# test:     Adição ou correção de testes
+# chore:    Mudanças no processo de build ou ferramentas auxiliares
+# perf:     Melhoria de performance
+# ci:       Mudanças em arquivos de configuração de CI
+# build:    Mudanças que afetam o sistema de build
+# revert:   Reverte um commit anterior
+#
+# <escopo> é opcional e pode ser: auth, tasks, ui, db, api, etc.
+#
+# Exemplos:
+# feat(auth): adicionar sistema de login
+# fix(tasks): corrigir validação de data
+# docs: atualizar README com instruções de instalação
+# style: formatar código com prettier
+# refactor(api): simplificar endpoints de tarefas

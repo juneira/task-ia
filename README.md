@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task IA - Sistema Inteligente de Gerenciamento de Tarefas
 
-## Getting Started
+Um sistema de gerenciamento de tarefas que utiliza IA para sugerir prioridades automaticamente, desenvolvido com Next.js, TypeScript e Tailwind CSS.
 
-First, run the development server:
+## 🚀 Funcionalidades
+
+- ✅ **CRUD completo de tarefas** - Criar, listar, editar e excluir tarefas
+- 🤖 **Sugestão de prioridade via IA** - DeepSeek analisa título, descrição e prazo
+- 📊 **Dashboard intuitivo** - Visão geral com métricas e filtros
+- 🔔 **Sistema de notificações** - Alertas in-app e por e-mail
+- 🔐 **Autenticação segura** - Sistema de login e cadastro
+- 📱 **Design responsivo** - Funciona em desktop e mobile
+
+## 🛠️ Tecnologias
+
+- **Frontend**: Next.js 15 + TypeScript + Tailwind CSS
+- **Backend**: API Routes do Next.js
+- **Banco de dados**: SQLite + Prisma ORM
+- **IA**: DeepSeek API
+- **Qualidade**: ESLint + Prettier + Husky
+
+## 🚀 Instalação e Configuração
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/juneira/task-ia.git
+cd task-ia
+```
+
+### 2. Instale as dependências
+
+```bash
+npm install
+```
+
+### 3. Configure as variáveis de ambiente
+
+```bash
+cp .env.example .env.local
+# Edite .env.local com suas configurações
+```
+
+### 4. Execute o projeto
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A aplicação estará disponível em `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Estrutura do Projeto
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Veja [ARCHITECTURE.md](./ARCHITECTURE.md) para detalhes completos da arquitetura.
 
-## Learn More
+## 🗺️ Roadmap
 
-To learn more about Next.js, take a look at the following resources:
+Veja o [CHANGELOG.md](./CHANGELOG.md) para acompanhar o progresso do desenvolvimento.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Desenvolvido com ❤️ por [Marcelo Marcinio Pereira Junior](https://github.com/juneira)

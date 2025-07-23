@@ -18,8 +18,7 @@ const eslintConfig = [
       '@typescript-eslint/no-explicit-any': 'warn',
 
       // General code quality rules
-      'no-console':
-        process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
 

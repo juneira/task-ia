@@ -12,9 +12,11 @@
 ## 1. Introdução
 
 ### 1.1 Propósito
+
 Este documento define os requisitos funcionais detalhados para o sistema Task IA, especificando comportamentos, funcionalidades e regras de negócio necessárias para implementação.
 
 ### 1.2 Escopo
+
 O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluindo CRUD de tarefas, sugestão de prioridade via IA, dashboard e sistema de notificações.
 
 ---
@@ -24,9 +26,11 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ### 2.1 Autenticação e Gerenciamento de Usuários
 
 #### RF001 - Cadastro de Usuário
+
 **Descrição**: O sistema deve permitir que novos usuários se cadastrem na plataforma.
 
 **Critérios de Aceitação**:
+
 - O usuário deve fornecer nome, e-mail e senha
 - E-mail deve ser único no sistema
 - Senha deve ter no mínimo 8 caracteres
@@ -35,14 +39,17 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Mensagem de confirmação deve ser exibida
 
 **Regras de Negócio**:
+
 - RN001: E-mail duplicado deve retornar erro específico
 - RN002: Senha deve conter pelo menos 1 letra maiúscula, 1 minúscula e 1 número
 - RN003: Sistema deve criptografar senha antes de armazenar
 
 #### RF002 - Login de Usuário
+
 **Descrição**: O sistema deve autenticar usuários existentes.
 
 **Critérios de Aceitação**:
+
 - Usuário deve fornecer e-mail e senha
 - Sistema deve validar credenciais
 - Login bem-sucedido deve criar sessão e redirecionar para dashboard
@@ -50,13 +57,16 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Sistema deve implementar proteção contra força bruta
 
 **Regras de Negócio**:
+
 - RN004: Após 5 tentativas falhadas, conta deve ser temporariamente bloqueada (15 minutos)
 - RN005: Sessão deve expirar após 24 horas de inatividade
 
 #### RF003 - Logout de Usuário
+
 **Descrição**: O sistema deve permitir que usuários façam logout.
 
 **Critérios de Aceitação**:
+
 - Botão de logout deve estar sempre visível quando logado
 - Logout deve destruir sessão atual
 - Usuário deve ser redirecionado para página de login
@@ -65,9 +75,11 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ### 2.2 Gerenciamento de Tarefas (CRUD)
 
 #### RF004 - Criar Tarefa
+
 **Descrição**: O sistema deve permitir a criação de novas tarefas através do endpoint POST /api/tasks.
 
 **Critérios de Aceitação**:
+
 - Endpoint: POST /api/tasks
 - Usuário deve fornecer título (obrigatório) e descrição (opcional)
 - Data de entrega deve ser selecionável via datepicker
@@ -78,15 +90,18 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Resposta deve retornar dados da tarefa criada com ID
 
 **Regras de Negócio**:
+
 - RN006: Título deve ter entre 3 e 100 caracteres
 - RN007: Descrição pode ter até 500 caracteres
 - RN008: Data de entrega não pode ser anterior à data atual
 - RN009: Se data não fornecida, sistema assume 7 dias a partir da criação
 
 #### RF005 - Listar Tarefas
+
 **Descrição**: O sistema deve exibir lista de tarefas do usuário através do endpoint GET /api/tasks.
 
 **Critérios de Aceitação**:
+
 - Endpoint: GET /api/tasks
 - Sistema deve retornar todas as tarefas do usuário atual em formato JSON
 - Lista deve incluir: id, título, descrição, prioridade, status, data de entrega, datas de criação/atualização
@@ -95,13 +110,16 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Deve suportar filtros via query params (status, prioridade, data)
 
 **Regras de Negócio**:
+
 - RN010: Apenas tarefas do usuário logado devem ser retornadas
 - RN011: Endpoint deve incluir metadados de paginação na resposta
 
 #### RF006 - Editar Tarefa
+
 **Descrição**: O sistema deve permitir edição de tarefas existentes através do endpoint PUT /api/tasks/[id].
 
 **Critérios de Aceitação**:
+
 - Endpoint: PUT /api/tasks/[id]
 - Usuário deve poder editar título, descrição, data de entrega, status e prioridade
 - Sistema deve validar se usuário é owner da tarefa
@@ -110,14 +128,17 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Campo updated_at deve ser atualizado automaticamente
 
 **Regras de Negócio**:
+
 - RN012: Apenas owner da tarefa pode editá-la
 - RN013: Todas as validações de criação se aplicam à edição
 - RN014: Status pode ser alterado para: Pendente, Em Progresso, Concluída, Cancelada
 
 #### RF007 - Excluir Tarefa
+
 **Descrição**: O sistema deve permitir exclusão de tarefas através do endpoint DELETE /api/tasks/[id].
 
 **Critérios de Aceitação**:
+
 - Endpoint: DELETE /api/tasks/[id]
 - Sistema deve validar se usuário é owner da tarefa
 - Tarefa deve ser marcada como deletada (soft delete) no banco
@@ -125,15 +146,18 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Interface deve solicitar confirmação antes de chamar endpoint
 
 **Regras de Negócio**:
+
 - RN015: Apenas owner da tarefa pode excluí-la
 - RN016: Exclusão deve ser soft delete (marcar como deletada) para auditoria
 
 ### 2.3 Sugestão de Prioridade via IA
 
 #### RF008 - Solicitar Sugestão de Prioridade
+
 **Descrição**: O sistema deve usar IA para sugerir prioridade de tarefas através do endpoint POST /api/tasks/prioritize.
 
 **Critérios de Aceitação**:
+
 - Endpoint: POST /api/tasks/prioritize
 - Request deve incluir título, descrição e data de entrega da tarefa
 - Sistema deve enviar dados para API da DeepSeek
@@ -143,14 +167,17 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Sistema deve funcionar mesmo se IA estiver indisponível
 
 **Regras de Negócio**:
+
 - RN017: Se API falhar, endpoint deve retornar erro específico com fallback
 - RN018: Timeout de 5 segundos para chamada da API
 - RN019: Sistema deve log todas as interações com IA para análise
 
 #### RF009 - Aplicar Sugestão de Prioridade
+
 **Descrição**: Usuário deve poder aplicar sugestão de prioridade manualmente através da interface.
 
 **Critérios de Aceitação**:
+
 - Interface deve exibir botão "Sugerir Prioridade" nas telas de criação/edição
 - Ao clicar, sistema deve chamar POST /api/tasks/prioritize
 - Sugestão da IA deve ser apresentada ao usuário claramente
@@ -159,15 +186,18 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Sistema deve registrar se sugestão foi aceita ou ignorada para métricas
 
 **Regras de Negócio**:
+
 - RN020: Decisão do usuário deve ser armazenada para análise de performance da IA
 - RN021: Usuário sempre pode alterar prioridade posteriormente via edição normal
 
 ### 2.4 Dashboard e Visualizações
 
 #### RF010 - Dashboard Principal
+
 **Descrição**: Sistema deve exibir visão geral das tarefas do usuário.
 
 **Critérios de Aceitação**:
+
 - Deve mostrar contadores: Total de tarefas, Por status (Pendente, Em Progresso, Concluída), Por prioridade (Alta, Média, Baixa)
 - Deve listar próximas tarefas a vencer (próximos 7 dias)
 - Deve mostrar tarefas em progresso
@@ -175,13 +205,16 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Dados devem ser atualizados em tempo real
 
 **Regras de Negócio**:
+
 - RN022: Dashboard deve carregar em até 2 segundos
 - RN023: Apenas dados do usuário logado devem ser exibidos
 
 #### RF011 - Filtros e Buscas
+
 **Descrição**: Sistema deve permitir filtrar e buscar tarefas.
 
 **Critérios de Aceitação**:
+
 - Filtros disponíveis: Status, Prioridade, Data de criação, Data de entrega
 - Busca deve funcionar por título e descrição
 - Filtros devem poder ser combinados
@@ -189,15 +222,18 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - URL deve refletir filtros aplicados para compartilhamento
 
 **Regras de Negócio**:
+
 - RN024: Busca deve ser case-insensitive
 - RN025: Filtros devem persistir durante a sessão do usuário
 
 ### 2.5 Sistema de Notificações
 
 #### RF012 - Notificações In-App
+
 **Descrição**: Sistema deve exibir notificações dentro da aplicação.
 
 **Critérios de Aceitação**:
+
 - Notificações devem aparecer em área dedicada da interface
 - Deve notificar sobre: Tarefas próximas do vencimento (2 dias), Tarefas vencidas, Mudanças de status importantes
 - Usuário deve poder marcar notificações como lidas
@@ -205,13 +241,16 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Notificações antigas devem ser removidas automaticamente (30 dias)
 
 **Regras de Negócio**:
+
 - RN026: Sistema deve verificar condições de notificação a cada login
 - RN027: Máximo de 50 notificações por usuário mantidas no sistema
 
 #### RF013 - Notificações por E-mail
+
 **Descrição**: Sistema deve enviar notificações por e-mail.
 
 **Critérios de Aceitação**:
+
 - E-mails devem ser enviados para: Tarefas vencendo em 24 horas, Tarefas vencidas há 1 dia
 - Template de e-mail deve ser profissional e responsivo
 - Usuário deve poder desabilitar notificações por e-mail
@@ -219,15 +258,18 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - E-mails devem ser enviados uma vez por condição
 
 **Regras de Negócio**:
+
 - RN028: E-mails devem ser enviados diariamente às 9h (horário local do servidor)
 - RN029: Sistema deve implementar rate limiting para evitar spam
 
 ### 2.6 Configurações de Usuário
 
 #### RF014 - Perfil do Usuário
+
 **Descrição**: Usuário deve poder visualizar e editar seu perfil.
 
 **Critérios de Aceitação**:
+
 - Usuário deve poder alterar nome e e-mail
 - Alteração de e-mail deve requerer confirmação
 - Usuário deve poder alterar senha fornecendo senha atual
@@ -235,18 +277,22 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - Alterações devem ser salvas com feedback visual
 
 **Regras de Negócio**:
+
 - RN030: Alteração de e-mail requer revalidação se já existir no sistema
 - RN031: Exclusão de conta deve remover todos os dados associados (LGPD compliance)
 
 #### RF015 - Preferências de Notificação
+
 **Descrição**: Usuário deve poder configurar preferências de notificação.
 
 **Critérios de Aceitação**:
+
 - Opções: Habilitar/desabilitar notificações in-app, Habilitar/desabilitar notificações por e-mail, Configurar antecedência para alertas (1, 2 ou 3 dias)
 - Configurações devem ser aplicadas imediatamente
 - Deve haver preview das configurações
 
 **Regras de Negócio**:
+
 - RN032: Configurações padrão: in-app habilitado, e-mail habilitado, 2 dias de antecedência
 
 ## 3. Especificação dos Endpoints da API
@@ -254,11 +300,13 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ### 3.1 Endpoints de Tarefas
 
 #### GET /api/tasks
+
 **Descrição**: Lista todas as tarefas do usuário autenticado
 **Método**: GET
 **Autenticação**: Requerida
 
 **Query Parameters**:
+
 - `page` (opcional): Número da página (default: 1)
 - `limit` (opcional): Items por página (default: 20, máximo: 100)
 - `status` (opcional): Filtro por status (Pendente, Em Progresso, Concluída, Cancelada)
@@ -266,6 +314,7 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 - `search` (opcional): Busca por título ou descrição
 
 **Response (200)**:
+
 ```json
 {
   "tasks": [
@@ -290,11 +339,13 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ```
 
 #### POST /api/tasks
+
 **Descrição**: Cria nova tarefa
 **Método**: POST
 **Autenticação**: Requerida
 
 **Request Body**:
+
 ```json
 {
   "title": "string (required, 3-100 chars)",
@@ -305,6 +356,7 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ```
 
 **Response (201)**:
+
 ```json
 {
   "id": "uuid",
@@ -319,14 +371,17 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ```
 
 #### PUT /api/tasks/[id]
+
 **Descrição**: Atualiza tarefa existente
 **Método**: PUT
 **Autenticação**: Requerida
 
 **Path Parameters**:
+
 - `id`: UUID da tarefa
 
 **Request Body**:
+
 ```json
 {
   "title": "string (optional, 3-100 chars)",
@@ -338,6 +393,7 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ```
 
 **Response (200)**:
+
 ```json
 {
   "id": "uuid",
@@ -352,14 +408,17 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ```
 
 #### DELETE /api/tasks/[id]
+
 **Descrição**: Deleta tarefa (soft delete)
 **Método**: DELETE
 **Autenticação**: Requerida
 
 **Path Parameters**:
+
 - `id`: UUID da tarefa
 
 **Response (200)**:
+
 ```json
 {
   "message": "Tarefa deletada com sucesso",
@@ -368,11 +427,13 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ```
 
 #### POST /api/tasks/prioritize
+
 **Descrição**: Solicita sugestão de prioridade via IA
 **Método**: POST
 **Autenticação**: Requerida
 
 **Request Body**:
+
 ```json
 {
   "title": "string (required)",
@@ -382,6 +443,7 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ```
 
 **Response (200)**:
+
 ```json
 {
   "suggestedPriority": "Alta|Média|Baixa",
@@ -391,6 +453,7 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ```
 
 **Response (503 - IA indisponível)**:
+
 ```json
 {
   "error": "IA temporariamente indisponível",
@@ -413,17 +476,20 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ## 4. Requisitos de Interface
 
 ### 3.1 Responsividade
+
 - Interface deve funcionar em dispositivos desktop (1024px+)
 - Interface deve funcionar em tablets (768px-1023px)
 - Interface deve funcionar em smartphones (320px-767px)
 
 ### 3.2 Acessibilidade
+
 - Contraste mínimo de 4.5:1 para textos
 - Navegação completa via teclado
 - Textos alternativos para elementos visuais
 - Suporte a leitores de tela
 
 ### 3.3 Performance
+
 - Tempo de carregamento inicial < 3 segundos
 - Transições e animações fluidas (60fps)
 - Estados de loading para operações > 1 segundo
@@ -433,43 +499,44 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 
 ## 4. Regras de Negócio Consolidadas
 
-| ID | Regra |
-|---|---|
-| RN001 | E-mail duplicado deve retornar erro específico |
-| RN002 | Senha deve conter pelo menos 1 letra maiúscula, 1 minúscula e 1 número |
-| RN003 | Sistema deve criptografar senha antes de armazenar |
+| ID    | Regra                                                                             |
+| ----- | --------------------------------------------------------------------------------- |
+| RN001 | E-mail duplicado deve retornar erro específico                                    |
+| RN002 | Senha deve conter pelo menos 1 letra maiúscula, 1 minúscula e 1 número            |
+| RN003 | Sistema deve criptografar senha antes de armazenar                                |
 | RN004 | Após 5 tentativas falhadas, conta deve ser temporariamente bloqueada (15 minutos) |
-| RN005 | Sessão deve expirar após 24 horas de inatividade |
-| RN006 | Título deve ter entre 3 e 100 caracteres |
-| RN007 | Descrição pode ter até 500 caracteres |
-| RN008 | Data de entrega não pode ser anterior à data atual |
-| RN009 | Se data não fornecida, sistema assume 7 dias a partir da criação |
-| RN010 | Apenas tarefas do usuário logado devem ser exibidas |
-| RN011 | Endpoint deve incluir metadados de paginação na resposta |
-| RN012 | Apenas owner da tarefa pode editá-la |
-| RN013 | Todas as validações de criação se aplicam à edição |
-| RN014 | Status permitidos: Pendente, Em Progresso, Concluída, Cancelada |
-| RN015 | Apenas owner da tarefa pode excluí-la |
-| RN016 | Exclusão deve ser soft delete para auditoria |
-| RN017 | Se API falhar, endpoint deve retornar erro específico com fallback |
-| RN018 | Timeout de 5 segundos para chamada da API |
-| RN019 | Sistema deve log todas as interações com IA |
-| RN020 | Decisão do usuário sobre IA deve ser armazenada para métricas |
-| RN021 | Usuário sempre pode alterar prioridade posteriormente via edição normal |
-| RN022 | Dashboard deve carregar em até 2 segundos |
-| RN023 | Apenas dados do usuário logado devem ser exibidos |
-| RN024 | Busca deve ser case-insensitive |
-| RN025 | Filtros devem persistir durante a sessão |
-| RN026 | Sistema deve verificar notificações a cada login |
-| RN027 | Máximo de 50 notificações por usuário mantidas |
-| RN028 | E-mails enviados diariamente às 9h |
-| RN029 | Rate limiting para evitar spam |
+| RN005 | Sessão deve expirar após 24 horas de inatividade                                  |
+| RN006 | Título deve ter entre 3 e 100 caracteres                                          |
+| RN007 | Descrição pode ter até 500 caracteres                                             |
+| RN008 | Data de entrega não pode ser anterior à data atual                                |
+| RN009 | Se data não fornecida, sistema assume 7 dias a partir da criação                  |
+| RN010 | Apenas tarefas do usuário logado devem ser exibidas                               |
+| RN011 | Endpoint deve incluir metadados de paginação na resposta                          |
+| RN012 | Apenas owner da tarefa pode editá-la                                              |
+| RN013 | Todas as validações de criação se aplicam à edição                                |
+| RN014 | Status permitidos: Pendente, Em Progresso, Concluída, Cancelada                   |
+| RN015 | Apenas owner da tarefa pode excluí-la                                             |
+| RN016 | Exclusão deve ser soft delete para auditoria                                      |
+| RN017 | Se API falhar, endpoint deve retornar erro específico com fallback                |
+| RN018 | Timeout de 5 segundos para chamada da API                                         |
+| RN019 | Sistema deve log todas as interações com IA                                       |
+| RN020 | Decisão do usuário sobre IA deve ser armazenada para métricas                     |
+| RN021 | Usuário sempre pode alterar prioridade posteriormente via edição normal           |
+| RN022 | Dashboard deve carregar em até 2 segundos                                         |
+| RN023 | Apenas dados do usuário logado devem ser exibidos                                 |
+| RN024 | Busca deve ser case-insensitive                                                   |
+| RN025 | Filtros devem persistir durante a sessão                                          |
+| RN026 | Sistema deve verificar notificações a cada login                                  |
+| RN027 | Máximo de 50 notificações por usuário mantidas                                    |
+| RN028 | E-mails enviados diariamente às 9h                                                |
+| RN029 | Rate limiting para evitar spam                                                    |
 
 ---
 
 ## 5. Casos de Uso Principais
 
 ### 5.1 Fluxo de Criação de Tarefa com Sugestão de IA (Manual)
+
 1. Usuário preenche formulário de nova tarefa
 2. Sistema valida dados de entrada
 3. Usuário clica em "Criar Tarefa"
@@ -484,6 +551,7 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 12. Prioridade final é salva e interface atualizada
 
 ### 5.2 Fluxo de Edição com Sugestão de Prioridade
+
 1. Usuário acessa formulário de edição da tarefa
 2. Sistema carrega dados atuais via GET /api/tasks (filtrado por ID)
 3. Usuário modifica campos desejados
@@ -496,6 +564,7 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 10. Tarefa é atualizada e interface reflete mudanças
 
 ### 5.3 Fluxo de Edição de Tarefa (Geral)
+
 1. Usuário acessa lista de tarefas no dashboard
 2. Usuário clica em tarefa específica para editar
 3. Sistema chama GET /api/tasks (filtrado) para carregar dados atuais
@@ -512,6 +581,7 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 14. Lista de tarefas é atualizada refletindo as mudanças
 
 ### 5.4 Fluxo de Dashboard
+
 1. Usuário faz login
 2. Sistema chama GET /api/tasks para carregar dados
 3. Dashboard é renderizado com métricas calculadas no frontend
@@ -526,18 +596,21 @@ O FRD abrange todas as funcionalidades do MVP conforme definido no PRD, incluind
 ## 6. Considerações Técnicas
 
 ### 6.1 Validação de Dados
+
 - Validação client-side para UX
 - Validação server-side para segurança
 - Sanitização de inputs para prevenir XSS
 - Validação de tipos com TypeScript
 
 ### 6.2 Tratamento de Erros
+
 - Mensagens de erro user-friendly
 - Logs detalhados para debugging
 - Fallbacks para funcionalidades críticas
 - Retry automático para falhas temporárias
 
 ### 6.3 Testes
+
 - Cobertura mínima de 80% para lógica de negócio
 - Testes de integração para fluxos principais
 - Testes e2e para cenários críticos

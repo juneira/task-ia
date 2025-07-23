@@ -13,9 +13,9 @@
 
 - [x] Criar estrutura base do projeto Next.js com TypeScript
 - [x] Configurar ESLint, Prettier e regras de qualidade de código
-- [ ] Configurar Git com gitignore e estrutura de commits
-- [ ] Criar estrutura de pastas seguindo clean architecture
-- [ ] Configurar ambiente de desenvolvimento local
+- [x] Configurar Git com gitignore e estrutura de commits
+- [x] Criar estrutura de pastas seguindo clean architecture
+- [x] Configurar ambiente de desenvolvimento local
 
 ### 🐳 Ambiente Containerizado
 
